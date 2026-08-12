@@ -1,122 +1,87 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState, useEffect } from "react";
+import BarRenderer from "./components/BarRenderer";
+import Controls from "./components/Controls";
+import { getMergeSortSteps } from "./algorithms/mergeSort";
+import { getQuickSortSteps } from "./algorithms/quickSort";
+import { buildSnapshots } from "./algorithms/buildSnapshots";
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+function generateRandomArray(size = 15) {
+  return Array.from({ length: size }, () => Math.floor(Math.random() * 90) + 10);
 }
 
-export default App
+function App() {
+  const [initialArray, setInitialArray] = useState(generateRandomArray());
+  const [algorithm, setAlgorithm] = useState("merge");
+  const [snapshots, setSnapshots] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [speed, setSpeed] = useState(5);
+
+  useEffect(() => {
+    const steps =
+      algorithm === "merge"
+        ? getMergeSortSteps(initialArray)
+        : getQuickSortSteps(initialArray);
+
+    setSnapshots(buildSnapshots(initialArray, steps));
+    setCurrentIndex(0);
+    setIsPlaying(false);
+  }, [initialArray, algorithm]);
+
+  useEffect(() => {
+    if (!isPlaying) return;
+
+    if (currentIndex >= snapshots.length - 1) {
+      setIsPlaying(false);
+      return;
+    }
+
+    const delay = 1000 / speed;
+
+    const timer = setTimeout(() => {
+      setCurrentIndex((i) => Math.min(i + 1, snapshots.length - 1));
+    }, delay);
+
+    return () => clearTimeout(timer);
+  }, [isPlaying, currentIndex, snapshots, speed]);
+
+  const currentSnapshot = snapshots[currentIndex] || {
+    array: initialArray,
+    barStates: new Array(initialArray.length).fill("default"),
+  };
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "40px" }}>
+      <h2>{algorithm === "merge" ? "Merge Sort" : "Quick Sort"}</h2>
+
+      <div style={{ marginBottom: "12px" }}>
+        <button
+          onClick={() => setAlgorithm("merge")}
+          style={{ fontWeight: algorithm === "merge" ? "bold" : "normal" }}
+        >
+          Merge Sort
+        </button>
+        <button
+          onClick={() => setAlgorithm("quick")}
+          style={{ fontWeight: algorithm === "quick" ? "bold" : "normal", marginLeft: "8px" }}
+        >
+          Quick Sort
+        </button>
+      </div>
+
+      <BarRenderer array={currentSnapshot.array} barStates={currentSnapshot.barStates} />
+
+      <Controls
+        isPlaying={isPlaying}
+        onPlayPause={() => setIsPlaying((prev) => !prev)}
+        onStepBack={() => setCurrentIndex((i) => Math.max(i - 1, 0))}
+        onStepForward={() => setCurrentIndex((i) => Math.min(i + 1, snapshots.length - 1))}
+        onReset={() => setInitialArray(generateRandomArray())}
+        speed={speed}
+        onSpeedChange={setSpeed}
+      />
+    </div>
+  );
+}
+
+export default App;

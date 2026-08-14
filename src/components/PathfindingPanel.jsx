@@ -25,6 +25,11 @@ function PathfindingPanel({ label, snapshots }) {
 
   const currentGrid = snapshots[currentIndex];
 
+  useEffect(() => {
+    setCurrentIndex(0);
+    setIsPlaying(false);
+    }, [snapshots]);
+
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
       <h3>{label}</h3>

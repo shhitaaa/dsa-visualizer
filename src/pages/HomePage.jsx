@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const CATEGORIES = [
   { path: "/sorting", title: "Sorting", description: "Merge Sort & Quick Sort", ready: true },
-  { path: "/graph", title: "Graph & Pathfinding", description: "BFS, DFS & Dijkstra's", ready: false },
+  { path: "/graph", title: "Graph & Pathfinding", description: "BFS, DFS & Dijkstra's", ready: true },
   { path: "/tree", title: "Tree Traversals", description: "BST Insert, Search & In-order", ready: false },
   { path: "/dp", title: "Dynamic Programming", description: "Fibonacci & 0/1 Knapsack", ready: false },
 ];

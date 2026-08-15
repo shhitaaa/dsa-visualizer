@@ -31,3 +31,21 @@ export const MAZE_PRESETS = {
   horizontalBarriers: makeHorizontalBarriers(),
   spiral: makeSpiral(),
 };
+
+function makeWeightedField() {
+  const weights = Array.from({ length: ROWS }, () => Array(COLS).fill(1));
+
+  for (let c = 5; c < 20; c++) {
+    weights[6][c] = 4;
+    weights[7][c] = 4;
+    weights[8][c] = 4;
+  }
+
+  for (let r = 3; r < 12; r++) {
+    weights[r][10] = 0; // wall
+  }
+
+  return { weights, start: [7, 2], end: [7, 22] };
+}
+
+export const WEIGHTED_PRESET = makeWeightedField();

@@ -6,6 +6,10 @@ const COLORS = {
   frontier: "#D97C7C",
   visited: "#EFD2D2",
   path: "#8FBF8F",
+  weight1: "#F0F0F0",
+  weight2: "#C9D6E3",
+  weight3: "#93AEC9",
+  weight4: "#5E7A99",
 };
 
 const ROWS = 15;

@@ -1,16 +1,47 @@
-# React + Vite
+DSA Visualizer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive web app for visualizing core Data Structures & Algorithms — built to turn algorithm theory into step-by-step, visual intuition.
 
-Currently, two official plugins are available:
+Features
+🎬 Step-by-step animated visualizations with play/pause and step forward/back controls
+🎚️ Adjustable playback speed
+🎨 Clean, color-coded states (comparing, swapping, sorted/visited/path, etc.)
+🧭 Category landing page with real routes for each module
+Modules
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+✅ Sorting
 
-## React Compiler
+Merge Sort
+Quick Sort
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Visualizes comparisons, swaps, and pivots on an array of bars, color-coded by state.
 
-## Expanding the ESLint configuration
+✅ Graph / Pathfinding
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+BFS vs DFS — side-by-side comparison view, each with independent playback
+Dijkstra's Algorithm — weighted grid with multiple terrain tiers and a color legend
+
+Runs on a 25×15 grid with preset maze/obstacle patterns.
+
+🚧 Coming soon
+
+Tree/BST — insert, search, in-order traversal
+Dynamic Programming — Fibonacci (memoization), 0/1 Knapsack
+
+Tech Stack
+React + Vite
+Canvas/SVG for custom rendering
+React Router for navigation
+lucide-react for icons
+Fully client-side — no backend
+
+Getting Started
+bash
+git clone https://github.com/shhitaaa/dsa-visualizer.git
+cd dsa-visualizer
+npm install
+npm run dev
+
+Why this project
+
+Built to turn strong DSA fundamentals into a visual, demo-friendly format — useful both for understanding algorithm behavior deeply and for showcasing that understanding.

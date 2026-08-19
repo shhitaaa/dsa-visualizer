@@ -3,6 +3,7 @@ DSA Visualizer
 An interactive web app for visualizing core Data Structures & Algorithms — built to turn algorithm theory into step-by-step, visual intuition.
 
 Features
+
 🎬 Step-by-step animated visualizations with play/pause and step forward/back controls
 🎚️ Adjustable playback speed
 🎨 Clean, color-coded states (comparing, swapping, sorted/visited/path, etc.)
@@ -26,6 +27,7 @@ Runs on a 25×15 grid with preset maze/obstacle patterns.
 🚧 Coming soon
 
 Tree/BST — insert, search, in-order traversal
+
 Dynamic Programming — Fibonacci (memoization), 0/1 Knapsack
 
 Tech Stack

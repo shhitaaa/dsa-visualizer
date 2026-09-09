@@ -3,6 +3,10 @@ import BarRenderer from "../components/BarRenderer";
 import Controls from "../components/Controls";
 import { getMergeSortSteps } from "../algorithms/mergeSort";
 import { getQuickSortSteps } from "../algorithms/quickSort";
+import { getBubbleSortSteps } from "../algorithms/bubbleSort";
+import { getSelectionSortSteps } from "../algorithms/selectionSort";
+import { getInsertionSortSteps } from "../algorithms/insertionSort";
+import { getHeapSortSteps } from "../algorithms/heapSort";
 import { buildSnapshots } from "../algorithms/buildSnapshots";
 
 function generateRandomArray(size = 15) {
@@ -17,12 +21,17 @@ function SortingPage() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(5);
 
-  useEffect(() => {
-    const steps =
-      algorithm === "merge"
-        ? getMergeSortSteps(initialArray)
-        : getQuickSortSteps(initialArray);
+  const ALGORITHMS = {
+    merge: { label: "Merge Sort", getSteps: getMergeSortSteps },
+    quick: { label: "Quick Sort", getSteps: getQuickSortSteps },
+    bubble: { label: "Bubble Sort", getSteps: getBubbleSortSteps },
+    selection: { label: "Selection Sort", getSteps: getSelectionSortSteps },
+    insertion: { label: "Insertion Sort", getSteps: getInsertionSortSteps },
+    heap: { label: "Heap Sort", getSteps: getHeapSortSteps },
+  };
 
+  useEffect(() => {
+    const steps = ALGORITHMS[algorithm].getSteps(initialArray);
     setSnapshots(buildSnapshots(initialArray, steps));
     setCurrentIndex(0);
     setIsPlaying(false);
@@ -52,21 +61,17 @@ function SortingPage() {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "40px" }}>
-      <h2>{algorithm === "merge" ? "Merge Sort" : "Quick Sort"}</h2>
+      <h2>{ALGORITHMS[algorithm].label}</h2>
 
       <div style={{ marginBottom: "12px" }}>
-        <button
-          onClick={() => setAlgorithm("merge")}
-          style={{ fontWeight: algorithm === "merge" ? "bold" : "normal" }}
+        <select
+          value={algorithm}
+          onChange={(e) => setAlgorithm(e.target.value)}
         >
-          Merge Sort
-        </button>
-        <button
-          onClick={() => setAlgorithm("quick")}
-          style={{ fontWeight: algorithm === "quick" ? "bold" : "normal", marginLeft: "8px" }}
-        >
-          Quick Sort
-        </button>
+          {Object.entries(ALGORITHMS).map(([key, { label }]) => (
+            <option key={key} value={key}>{label}</option>
+          ))}
+        </select>
       </div>
 
       <BarRenderer array={currentSnapshot.array} barStates={currentSnapshot.barStates} />

@@ -15,6 +15,10 @@ An interactive web app for visualizing core Data Structures & Algorithms — bui
 **✅ Sorting**
 - Merge Sort
 - Quick Sort
+- Bubble Sort
+- Selection Sort
+- Insertion Sort
+- Heap Sort
 
 Visualizes comparisons, swaps, and pivots on an array of bars, color-coded by state.
 
@@ -23,10 +27,6 @@ Visualizes comparisons, swaps, and pivots on an array of bars, color-coded by st
 - Dijkstra's Algorithm — weighted grid with multiple terrain tiers and a color legend
 
 Runs on a 25×15 grid with preset maze/obstacle patterns.
-
-**🚧 Coming soon**
-- Tree/BST — insert, search, in-order traversal
-- Dynamic Programming — Fibonacci (memoization), 0/1 Knapsack
 
 ## Tech Stack
 
